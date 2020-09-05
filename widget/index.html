@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www/w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>My Sample Project</title>
+        <!-- data-main attribute tells require.js to load
+             scripts/main.js after require.js loads. -->
+        <script data-main="files/js/configure.js" src="require/require.js"></script>
+		<script type="text/javascript" src="./files/js/Translation.js"></script>
+		<script type="text/javascript">
+			require(['Translation'], function(TranslationWidget) {
+               'use strict';
+			    TranslationWidget.init();
+			});
+		</script>
+    </head>
+    <body>
+    </body>
+</html>

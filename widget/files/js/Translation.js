@@ -1,8 +1,9 @@
-define("Translation", ["PageBuilder", "PageBuilderInfo.json"], function (PageBuilder, PageBuilderInfo) {
+define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender"], function (PageBuilder, PageBuilderInfo, DOMAppender) {
 	var translation = {
 		init: function () {
 			var thisContext = this;
 			thisContext.start();
+			console.info("it is working");
 		},
 		start: function () {
 			// start your code from here
@@ -16,13 +17,14 @@ define("Translation", ["PageBuilder", "PageBuilderInfo.json"], function (PageBui
 		buildBodySkeleton: function () {
 			var bodyDivStructure = this.getBodyDivStructure();
 			document.body.innerHTML = bodyDivStructure;
-			PageBuilder.buildMenu();
 			var headerMenu = PageBuilderInfo.headerMenu;
 			console.info(headerMenu);
-
+			var headerMenuHTML = PageBuilder.buildMenu(headerMenu);
+			console.info(headerMenuHTML);
+			DOMAppender.append(PageBuilderInfo.headerMenuId,headerMenuHTML);
 		},
 		getBodyDivStructure: function () {
-			var bodyDivStructure = '<div><div id="header-menu"></div><div id="working-space"></div></div>';
+			var bodyDivStructure = '<div><div id="headerMenu"></div><div id="working-space"></div></div>';
 			return bodyDivStructure;
 		}
 	};

@@ -3,28 +3,29 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender"], functio
 		init: function () {
 			var thisContext = this;
 			thisContext.start();
-			console.info("it is working");
 		},
 		start: function () {
-			// start your code from here
-			console.info("Translation...");
+			console.info("++++++++++ start ++++++++++");
 			this.clearDomBody();
 			this.buildBodySkeleton();
+			console.log("---------- start ------------");
 		},
 		clearDomBody: function () {
-			document.body.innerHTML = "Hello, I am working";
+			document.body.innerHTML = "";
 		},
 		buildBodySkeleton: function () {
+			PageBuilder.setBodyStyle();
 			var bodyDivStructure = this.getBodyDivStructure();
 			document.body.innerHTML = bodyDivStructure;
 			var headerMenu = PageBuilderInfo.headerMenu;
 			console.info(headerMenu);
 			var headerMenuHTML = PageBuilder.buildMenu(headerMenu);
 			console.info(headerMenuHTML);
-			DOMAppender.append(PageBuilderInfo.headerMenuId,headerMenuHTML);
+			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML);PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
+			PageBuilder.seperateElement(PageBuilderInfo.workingSpaceId);
 		},
 		getBodyDivStructure: function () {
-			var bodyDivStructure = '<div><div id="headerMenu"></div><div id="working-space"></div></div>';
+			var bodyDivStructure = '<div><div id="' + PageBuilderInfo.headerMenuId + '"></div><div id="' + PageBuilderInfo.workingSpaceId + '"></div></div>';
 			return bodyDivStructure;
 		}
 	};

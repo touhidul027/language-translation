@@ -1,14 +1,33 @@
-define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender"], function (PageBuilder, PageBuilderInfo, DOMAppender) {
+define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender", "Utils", "Events"], function (PageBuilder, PageBuilderInfo, DOMAppender, Utils, Events) {
 	var translation = {
 		init: function () {
 			var thisContext = this;
 			thisContext.start();
 		},
 		start: function () {
-			console.info("++++++++++ start ++++++++++");
+			console.log("++++++++++ start ++++++++++");
 			this.clearDomBody();
 			this.buildBodySkeleton();
+			this.addEvents();
 			console.log("---------- start ------------");
+		},
+		addEvents: function () {
+			console.log("+++++++++++ addEvents ++++++++++");
+			this.addEventToMenu();
+			console.log("----------- addEvents ----------");
+		},
+		addEventToMenu: function () {
+			console.log("+++++++++++addEventToMenu+++++++++++");
+			var headerMenu = PageBuilderInfo.headerMenu;
+			for (var i = 0; i < headerMenu.length; i++) {
+				(function (i) {
+					var id = Utils.generateId(headerMenu[i]);
+					console.log(id);
+					Events.addHover(id);
+					Events.addClickEvent(id, Utils.getClickHandler(Object.keys({ headerMenu })[0]));
+				})(i);
+			}
+			console.log("-------------addEventToMenu--------------");
 		},
 		clearDomBody: function () {
 			document.body.innerHTML = "";
@@ -21,7 +40,7 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender"], functio
 			console.info(headerMenu);
 			var headerMenuHTML = PageBuilder.buildMenu(headerMenu);
 			console.info(headerMenuHTML);
-			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML);PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
+			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML); PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
 			PageBuilder.seperateElement(PageBuilderInfo.workingSpaceId);
 		},
 		getBodyDivStructure: function () {

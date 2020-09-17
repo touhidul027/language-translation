@@ -40,7 +40,8 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender", "Utils",
 			console.info(headerMenu);
 			var headerMenuHTML = PageBuilder.buildMenu(headerMenu);
 			console.info(headerMenuHTML);
-			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML); PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
+			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML); 
+			PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
 			PageBuilder.seperateElement(PageBuilderInfo.workingSpaceId);
 		},
 		getBodyDivStructure: function () {

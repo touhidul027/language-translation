@@ -14,6 +14,14 @@ define("CSSDesigner", [], function () {
         horizantalAlignment: function () {
             return "display: flex;background-color: lightslategray;";
         },
+        buildStyleString: function (cssObj) {
+            var cssText = '';
+            for (const [key, value] of Object.entries(cssObj)) {
+                console.info(key + ' ' + value);
+                cssText += key + ':' + value + ';';
+            }
+            return cssText;
+        },
         test: function () {
             console.info("testing----------");
         }

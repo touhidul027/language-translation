@@ -33,6 +33,26 @@ define("PageBuilder", ["CSSDesigner"], function (CSSDesigner) {
 			var elementStyle = document.getElementById(elementId).style;
 			elementStyle.padding = '5px';
 			elementStyle.margin = '5px';
+		},
+		expandMenuButtonVector: function (elementId) {
+			var expandMenuId = 'expandMenu' + elementId;
+			var expandMenu = document.createElement('div');
+			expandMenu.setAttribute('id', expandMenuId);
+			var className = 'class' + elementId;
+			var style = CSSDesigner.expandMenuButtonVectorCss();
+			expandMenu = this.addDivs(expandMenu, 3, className, style);
+			return expandMenu;
+		},
+		addDivs: function(expandMenu,n,className,divStyle) {
+			for (var i = 0; i < n; i++) {
+				var div = document.createElement('div');
+				div.classList.add(className);
+				if (divStyle) {
+					div.style.cssText = divStyle;
+				}
+				expandMenu.appendChild(div);
+			}
+			return expandMenu;
 		}
 	};
 	return pageBuilder;

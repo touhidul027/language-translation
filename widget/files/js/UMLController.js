@@ -1,5 +1,5 @@
 
-define("UMLController", ["PageBuilderInfo", "CSSDesigner"], function (PageBuilderInfo, CSSDesigner) {
+define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], function (PageBuilderInfo, PageBuilder, CSSDesigner) {
     var UMLController = {
         locality: {
             maincontainer: 'newUmlContainer',
@@ -9,9 +9,16 @@ define("UMLController", ["PageBuilderInfo", "CSSDesigner"], function (PageBuilde
         },
         generateUMLStructure: function () {
             console.log("+++++++++generateUMLStructure+++++++++");
+            // if uml environment is ready then do not need to create it again
+            var e = document.getElementById(this.locality.maincontainer);
+            if (e) {
+               console.log("---------generateUMLStructure---------");
+               return; 
+            }
             console.info("zzz " + PageBuilderInfo.workingSpaceId);
             var workingSpace = document.getElementById(PageBuilderInfo.workingSpaceId);
             console.info("+-+-+-+ locality");
+            
             console.info(this.locality.maincontainer);
             var mainContainer = this.createMainContainer(this.locality.maincontainer);
             if (mainContainer !== null) {
@@ -54,6 +61,7 @@ define("UMLController", ["PageBuilderInfo", "CSSDesigner"], function (PageBuilde
             var defaultSetting = document.createElement('div');
             defaultSetting.setAttribute('id', this.locality.defaultSettingId);
             defaultSetting = this.createDefaultSettingHeader(defaultSetting);
+            defaultSetting.appendChild(PageBuilder.expandMenuButtonVector(this.locality.defaultSettingId));
             parentElement.appendChild(defaultSetting);
             console.log("------------ createDefaultSetting -------------");
             return parentElement;
@@ -65,8 +73,9 @@ define("UMLController", ["PageBuilderInfo", "CSSDesigner"], function (PageBuilde
             var css = {
                 height: '44px',
                 width: 'auto',
-                'background-color': 'darkgray',
-                'text-align': 'start'
+                
+                'text-align': 'start',
+                
             }
             var cssText = CSSDesigner.buildStyleString(css);
             defaultSettingHeader.style.cssText = cssText;

@@ -16,7 +16,7 @@ define("Events", [], function () {
             console.log("++++++++++addClickEvent+++++++++");
             var element = document.getElementById(elementId);
             element.onclick = function() {
-                callBack(elementId);
+                 callBack(elementId);
             }
             console.log("----------addClickEvent---------");
         },

@@ -22,6 +22,16 @@ define("CSSDesigner", [], function () {
             }
             return cssText;
         },
+        expandMenuButtonVectorCss: function() {
+            var cssObj = {
+                'width': '35px',
+                'height': '5px',
+                'background-color': 'black',
+                'margin': '6px 0'
+            };
+            var cssStyle = this.buildStyleString(cssObj);
+            return cssStyle;
+        },
         test: function () {
             console.info("testing----------");
         }

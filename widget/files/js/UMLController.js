@@ -1,5 +1,5 @@
 
-define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], function (PageBuilderInfo, PageBuilder, CSSDesigner) {
+define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events) {
     var UMLController = {
         locality: {
             maincontainer: 'newUmlContainer',
@@ -7,18 +7,22 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
             defaultSettingId: 'defaultSetting',
             defaultSettingHeaderId: 'defaultSettingHeader'
         },
+        addEventToExpandMenuButtonVector: function (element) {
+            var thisContext = this;
+            element.onclick = function () {
+                thisContext.displayfaultSettingBody();
+            }
+        },
         generateUMLStructure: function () {
             console.log("+++++++++generateUMLStructure+++++++++");
             // if uml environment is ready then do not need to create it again
             var e = document.getElementById(this.locality.maincontainer);
             if (e) {
-               console.log("---------generateUMLStructure---------");
-               return; 
+                console.log("---------generateUMLStructure---------");
+                return;
             }
-            console.info("zzz " + PageBuilderInfo.workingSpaceId);
             var workingSpace = document.getElementById(PageBuilderInfo.workingSpaceId);
-            console.info("+-+-+-+ locality");
-            
+
             console.info(this.locality.maincontainer);
             var mainContainer = this.createMainContainer(this.locality.maincontainer);
             if (mainContainer !== null) {
@@ -34,7 +38,6 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
             console.log("++++++++++++ createMainContainer +++++++++++++");
             var mainContainer = document.createElement('div');
             mainContainer.setAttribute('id', elemId);
-            console.info(mainContainer);
             console.log("------------ createMainContainer -------------");
             return mainContainer;
         },
@@ -50,7 +53,6 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
                 margin: '5px'
             };
             var cssText = CSSDesigner.buildStyleString(css);
-            console.info(cssText);
             sidePanel.style.cssText = cssText;
             this.createDefaultSetting(sidePanel);
             console.log("------------ createSidePanel -------------");
@@ -62,6 +64,7 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
             defaultSetting.setAttribute('id', this.locality.defaultSettingId);
             defaultSetting = this.createDefaultSettingHeader(defaultSetting);
             defaultSetting.appendChild(PageBuilder.expandMenuButtonVector(this.locality.defaultSettingId));
+            this.addEventToExpandMenuButtonVector(defaultSetting);
             parentElement.appendChild(defaultSetting);
             console.log("------------ createDefaultSetting -------------");
             return parentElement;
@@ -73,9 +76,7 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
             var css = {
                 height: '44px',
                 width: 'auto',
-                
                 'text-align': 'start',
-                
             }
             var cssText = CSSDesigner.buildStyleString(css);
             defaultSettingHeader.style.cssText = cssText;
@@ -83,6 +84,11 @@ define("UMLController", ["PageBuilderInfo","PageBuilder", "CSSDesigner"], functi
             parentElem.appendChild(defaultSettingHeader);
             console.log("------------ createDefaultSettingHeader -------------");
             return parentElem;
+        },
+        displayfaultSettingBody: function () {
+            console.log("++++++++++++ displayfaultSettingBody +++++++++++++");
+            this.createDefaultSettingBody();
+            console.log("------------ displayfaultSettingBody -------------");
         },
         createDefaultSettingBody: function () {
             console.log("++++++++++++ createDefaultSettingBody +++++++++++++");

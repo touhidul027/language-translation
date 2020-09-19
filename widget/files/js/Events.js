@@ -1,8 +1,14 @@
 define("Events", [], function () {
     var Events = {
-        addHover: function (elementId) {
+        addHover: function (e) {
             console.log("++++++++++addHover+++++++++");
-            var element = document.getElementById(elementId);
+            var element;
+            if (typeof e === 'string') {
+                element = document.getElementById(e);
+            } else {
+                element = e;
+            }
+            
             element.onmouseover = function () {
                 this.style.boxShadow = "10px 10px 5px #888";
                 this.style.cursor = "pointer";

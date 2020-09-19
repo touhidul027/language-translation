@@ -1,4 +1,4 @@
-define("PageBuilder", ["CSSDesigner"], function (CSSDesigner) {
+define("PageBuilder", ["CSSDesigner", "Events"], function (CSSDesigner, Events) {
 	var pageBuilder = {
 		buildMenu: function (arr) {
 			console.log('++++++++ buildMenu +++++++');
@@ -7,13 +7,11 @@ define("PageBuilder", ["CSSDesigner"], function (CSSDesigner) {
 			for (var i = 0; i < arr.length; i++) {
 				(function (i) {
 					var itemText = arr[i];
-					console.log(arr[i]);
 					var id = function generateId(itemText) {
 						return itemText.toLowerCase().split(" ").join("");
 					}(itemText);
 					var style = CSSDesigner.getMenuStyle('div');
 					var item = '<div id="' + id + '" style="' + style + '">' + arr[i] + '</div>';
-
 					menu += item;
 				})(i);
 			}
@@ -38,12 +36,18 @@ define("PageBuilder", ["CSSDesigner"], function (CSSDesigner) {
 			var expandMenuId = 'expandMenu' + elementId;
 			var expandMenu = document.createElement('div');
 			expandMenu.setAttribute('id', expandMenuId);
+			var cssObj = {
+				'margin': '2px',
+				'padding': '2px'
+			}
+			expandMenu.style.cssText = CSSDesigner.buildStyleString(cssObj);
 			var className = 'class' + elementId;
 			var style = CSSDesigner.expandMenuButtonVectorCss();
 			expandMenu = this.addDivs(expandMenu, 3, className, style);
+			Events.addHover(expandMenu);
 			return expandMenu;
 		},
-		addDivs: function(expandMenu,n,className,divStyle) {
+		addDivs: function (expandMenu, n, className, divStyle) {
 			for (var i = 0; i < n; i++) {
 				var div = document.createElement('div');
 				div.classList.add(className);

@@ -22,7 +22,6 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender", "Utils",
 			for (var i = 0; i < headerMenu.length; i++) {
 				(function (i) {
 					var id = Utils.generateId(headerMenu[i]);
-					console.log(id);
 					Events.addHover(id);
 					Events.addClickEvent(id, Utils.getClickHandler(Object.keys({ headerMenu })[0]));
 				})(i);
@@ -37,9 +36,7 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender", "Utils",
 			var bodyDivStructure = this.getBodyDivStructure();
 			document.body.innerHTML = bodyDivStructure;
 			var headerMenu = PageBuilderInfo.headerMenu;
-			console.info(headerMenu);
 			var headerMenuHTML = PageBuilder.buildMenu(headerMenu);
-			console.info(headerMenuHTML);
 			DOMAppender.append(PageBuilderInfo.headerMenuId, headerMenuHTML); 
 			PageBuilder.setWorkspace(PageBuilderInfo.workingSpaceId);
 			PageBuilder.seperateElement(PageBuilderInfo.workingSpaceId);

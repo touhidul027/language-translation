@@ -17,7 +17,6 @@ define("CSSDesigner", [], function () {
         buildStyleString: function (cssObj) {
             var cssText = '';
             for (const [key, value] of Object.entries(cssObj)) {
-                console.info(key + ' ' + value);
                 cssText += key + ':' + value + ';';
             }
             return cssText;
@@ -32,6 +31,17 @@ define("CSSDesigner", [], function () {
             var cssStyle = this.buildStyleString(cssObj);
             return cssStyle;
         },
+        switchDisplay: function(element) {
+            if (element.style.display === 'none') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        },
+        appendInnerHtml: function(elementId, innerHTML) {
+            document.getElementById(elementId).innerHTML = innerHTML;
+        },
+        
         test: function () {
             console.info("testing----------");
         }

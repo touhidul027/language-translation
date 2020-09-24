@@ -57,6 +57,21 @@ define("PageBuilder", ["CSSDesigner", "Events"], function (CSSDesigner, Events) 
 				expandMenu.appendChild(div);
 			}
 			return expandMenu;
+		},
+		addPairInput: function (parentElement, map) {
+			var div = document.createElement('div');
+			var cssObj = {
+				padding: '10px',
+				display: 'flex'
+			}
+			var pairStyle = CSSDesigner.buildStyleString(cssObj);
+			for (const [key, value] of Object.entries(map)) {
+				var temp = document.createElement('div');
+				temp.innerHTML = key + '<input type="text" id="' + value + '" name="fname" style="width: 100px;margin-left: 10px;background-color: lightgrey;"></input>';
+				temp.style.cssText = pairStyle;
+				div.appendChild(temp);
+			}
+			parentElement.appendChild(div);
 		}
 	};
 	return pageBuilder;

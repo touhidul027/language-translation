@@ -5,7 +5,8 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
             defaultSettingId: 'defaultSetting',
-            defaultSettingHeaderId: 'defaultSettingHeader'
+            defaultSettingHeaderId: 'defaultSettingHeader',
+            defaulSettingBodyDivId: ' defaulSettingBody'
         },
         addEventToExpandMenuButtonVector: function (element) {
             var thisContext = this;
@@ -87,13 +88,46 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
         },
         displayfaultSettingBody: function () {
             console.log("++++++++++++ displayfaultSettingBody +++++++++++++");
-            this.createDefaultSettingBody();
+            var settingBodyDiv = this.createDefaultSettingBody();
+            if (settingBodyDiv) {
+                document.body.appendChild(settingBodyDiv);
+            }
             console.log("------------ displayfaultSettingBody -------------");
         },
         createDefaultSettingBody: function () {
             console.log("++++++++++++ createDefaultSettingBody +++++++++++++");
-
+            var settingBodyDiv = document.createElement('div');
+            var divId = this.locality.defaulSettingBodyDivId;
+            var element = document.getElementById(divId);
+            if (element) {
+                CSSDesigner.switchDisplay(element);
+                return null;
+            }
+            settingBodyDiv.setAttribute('id', divId);
+            var cssObject = {
+                width: '283px',
+                height: '108px',
+                'background-color': 'grey',
+                transform: 'translate',
+                border: 'solid whitesmoke 1px',
+                display: 'flex',
+                padding: '2px',
+                margin: '5px',
+                position: 'absolute',
+                left: '24px',
+                top: '108px',
+                overflow: 'auto'
+            };
+            var cssText = CSSDesigner.buildStyleString(cssObject);
+            settingBodyDiv.style.cssText = cssText;
+            var pairInputMap = {
+                Fields : 'defaultFieldNumber',
+                Methods : 'defaultMethodNumber',
+                ToString : 'defaultToString'
+            };
+            PageBuilder.addPairInput(settingBodyDiv,pairInputMap);
             console.log("------------ createDefaultSettingBody -------------");
+            return settingBodyDiv;
         }
     };
     return UMLController;

@@ -18,6 +18,13 @@ define("Utils", [], function () {
                         console.info('------ ' + elementId + ' clicked');
                     }
                 }
+            } else if (key === "defaultFieldMethodNumberButton") {
+                func = function (elementId) {
+                    require(['UMLController'], function (UMLController) {
+                        'use strict';
+                        UMLController.refreshMainPanel();
+                    });
+                }
             }
             return func;
         }

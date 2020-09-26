@@ -72,6 +72,10 @@ define("PageBuilder", ["CSSDesigner", "Events"], function (CSSDesigner, Events) 
 				div.appendChild(temp);
 			}
 			parentElement.appendChild(div);
+			return {
+				"parentElement": parentElement,
+				"childPairedDiv": div
+			}
 		}
 	};
 	return pageBuilder;

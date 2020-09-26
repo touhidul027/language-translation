@@ -1,5 +1,5 @@
 
-define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events) {
+define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events", "DOMAppender"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events, DOMAppender) {
     var UMLController = {
         locality: {
             maincontainer: 'newUmlContainer',
@@ -121,13 +121,24 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             var cssText = CSSDesigner.buildStyleString(cssObject);
             settingBodyDiv.style.cssText = cssText;
             var pairInputMap = {
-                Fields : 'defaultFieldNumber',
-                Methods : 'defaultMethodNumber',
-                ToString : 'defaultToString'
+                Fields: 'defaultFieldNumber',
+                Methods: 'defaultMethodNumber'
             };
-            PageBuilder.addPairInput(settingBodyDiv,pairInputMap);
+            var inputValuesMap = {
+                defaultFieldNumber: 3,
+                defaultMethodNumber: 3
+            };
+            var settingBodyDivAndPairedDiv = PageBuilder.addPairInput(settingBodyDiv, pairInputMap);
+            var nodes = settingBodyDivAndPairedDiv.childPairedDiv.childNodes;
+            var inputNodesSet = DOMAppender.elementExtract(nodes, "input");
+            DOMAppender.appendText(inputNodesSet, inputValuesMap);
+            DOMAppender.addButton(settingBodyDiv, { text: "refresh", id: "defaultFieldMethodNumberButton" });
             console.log("------------ createDefaultSettingBody -------------");
-            return settingBodyDiv;
+            return settingBodyDivAndPairedDiv.parentElement;
+        },
+        refreshMainPanel: function () {
+            console.log("++++++++++++ refreshMainPanel +++++++++++++");
+            console.log("------------ refreshMainPanel -------------");
         }
     };
     return UMLController;

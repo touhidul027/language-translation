@@ -4,9 +4,11 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
         locality: {
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
+            bodyPanelId: 'bodyPanel',
             defaultSettingId: 'defaultSetting',
             defaultSettingHeaderId: 'defaultSettingHeader',
-            defaulSettingBodyDivId: ' defaulSettingBody'
+            defaulSettingBodyDivId: 'defaulSettingBody',
+            umlClassDiagramClass: 'umlClassDiagram'
         },
         addEventToExpandMenuButtonVector: function (element) {
             var thisContext = this;
@@ -23,22 +25,25 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 return;
             }
             var workingSpace = document.getElementById(PageBuilderInfo.workingSpaceId);
-
-            console.info(this.locality.maincontainer);
             var mainContainer = this.createMainContainer(this.locality.maincontainer);
             if (mainContainer !== null) {
                 workingSpace.appendChild(mainContainer);
                 var sidePanel = this.createSidePanel(this.locality.sidePanelId);
-                console.info(workingSpace);
+                var bodyPanel = this.createBodyPanel(this.locality.bodyPanelId);
                 mainContainer.appendChild(sidePanel);
+                mainContainer.appendChild(bodyPanel);
             }
-
             console.log("---------generateUMLStructure---------");
         },
         createMainContainer: function (elemId) {
             console.log("++++++++++++ createMainContainer +++++++++++++");
             var mainContainer = document.createElement('div');
             mainContainer.setAttribute('id', elemId);
+            var cssObject = {
+                display: 'flex'
+            };
+            var cssText = CSSDesigner.buildStyleString(cssObject);
+            mainContainer.style.cssText = cssText;
             console.log("------------ createMainContainer -------------");
             return mainContainer;
         },
@@ -139,6 +144,50 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
         refreshMainPanel: function () {
             console.log("++++++++++++ refreshMainPanel +++++++++++++");
             console.log("------------ refreshMainPanel -------------");
+        },
+        createBodyPanel: function (bodyPanelDivId) {
+            console.log("++++++++++++ createBodyPanel +++++++++++++");
+            var bodyPanelDiv = document.createElement('div');
+            bodyPanelDiv.setAttribute("id", bodyPanelDivId);
+            var cssObj = {
+                'background- color': 'lightgray',
+                width: '1080px',
+                height: '506px',
+                margin: '5px',
+                border: 'solid whitesmoke 1px',
+            }
+            var cssText = CSSDesigner.buildStyleString(cssObj);
+            bodyPanelDiv.style.cssText = cssText;
+            var classDiagram = this.drawClassDiagram();
+            bodyPanelDiv.appendChild(classDiagram);
+            console.log("------------ createBodyPanel -------------");
+            return bodyPanelDiv;
+        },
+        drawClassDiagram: function () {
+            console.log("++++++++++++ drawClassDiagram +++++++++++++");
+            var diagrams = document.getElementsByClassName(this.locality.umlClassDiagramClass);
+            var classDiagramId = this.locality.umlClassDiagramClass + '_' ;
+            if (diagrams) {
+                classDiagramId += diagrams.length;
+            } else {
+                classDiagramId += '0';
+            }
+
+            var classDiagram = document.createElement('div');
+            classDiagram.setAttribute("id", classDiagramId);
+            classDiagram.classList.add(this.locality.umlClassDiagramClass);
+            var cssObj = {
+                'background- color': 'lightgray',
+                width: '300px',
+                height: '430px',
+                margin: '5px',
+                border: 'solid black 1px',
+                'background-color': 'silver'
+            }
+            var cssText = CSSDesigner.buildStyleString(cssObj);
+            classDiagram.style.cssText = cssText;
+            console.log("------------ drawClassDiagram -------------");
+            return classDiagram;
         }
     };
     return UMLController;

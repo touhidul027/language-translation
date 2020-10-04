@@ -30,6 +30,8 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 workingSpace.appendChild(mainContainer);
                 var sidePanel = this.createSidePanel(this.locality.sidePanelId);
                 var bodyPanel = this.createBodyPanel(this.locality.bodyPanelId);
+                var rightClickMenu = this.getUMLRightClickMenu();
+                bodyPanel.appendChild(rightClickMenu);
                 mainContainer.appendChild(sidePanel);
                 mainContainer.appendChild(bodyPanel);
             }
@@ -160,13 +162,17 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             bodyPanelDiv.style.cssText = cssText;
             var classDiagram = this.drawClassDiagram();
             bodyPanelDiv.appendChild(classDiagram);
+            Events.dragElement(classDiagram); // frame will be dragrable
+            var ele = this.getUMLRightClickMenu();
+            Events.rightClickMenu(classDiagram, "fun123");
             console.log("------------ createBodyPanel -------------");
             return bodyPanelDiv;
         },
+        // the div area that will contains UML information
         drawClassDiagram: function () {
             console.log("++++++++++++ drawClassDiagram +++++++++++++");
             var diagrams = document.getElementsByClassName(this.locality.umlClassDiagramClass);
-            var classDiagramId = this.locality.umlClassDiagramClass + '_' ;
+            var classDiagramId = this.locality.umlClassDiagramClass + '_';
             if (diagrams) {
                 classDiagramId += diagrams.length;
             } else {
@@ -177,17 +183,26 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             classDiagram.setAttribute("id", classDiagramId);
             classDiagram.classList.add(this.locality.umlClassDiagramClass);
             var cssObj = {
+                position: 'absolute',
                 'background- color': 'lightgray',
                 width: '300px',
                 height: '430px',
                 margin: '5px',
                 border: 'solid black 1px',
-                'background-color': 'silver'
+                'background-color': 'silver',
+                overflow: 'hidden'
             }
             var cssText = CSSDesigner.buildStyleString(cssObj);
             classDiagram.style.cssText = cssText;
             console.log("------------ drawClassDiagram -------------");
             return classDiagram;
+        },
+        getUMLRightClickMenu: function () {
+            // demo menu
+            var rightClickMenu = document.createElement('div');
+            rightClickMenu.setAttribute("id","fun123");
+            rightClickMenu.innerText = "Right Click being clicked."
+            return rightClickMenu;
         }
     };
     return UMLController;

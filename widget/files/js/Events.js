@@ -8,7 +8,7 @@ define("Events", [], function () {
             } else {
                 element = e;
             }
-            
+
             element.onmouseover = function () {
                 this.style.boxShadow = "10px 10px 5px #888";
                 this.style.cursor = "pointer";
@@ -21,14 +21,72 @@ define("Events", [], function () {
         addClickEvent: function (elementId, callBack) {
             console.log("++++++++++addClickEvent+++++++++");
             var element = document.getElementById(elementId);
-            element.onclick = function() {
-                 callBack(elementId);
+            element.onclick = function () {
+                callBack(elementId);
             }
             console.log("----------addClickEvent---------");
         },
-        removeClickEvent: function() {
+        removeClickEvent: function () {
             console.log("++++++++++removeClickEvent+++++++++");
             console.log("----------removeClickEvent---------");
+        },
+        dragElement: function (el) {
+            el.addEventListener('mousedown', function (e) {
+                var offsetX = e.clientX - parseInt(window.getComputedStyle(this).left);
+                var offsetY = e.clientY - parseInt(window.getComputedStyle(this).top);
+
+                function mouseMoveHandler(e) {
+                    el.style.top = (e.clientY - offsetY) + 'px';
+                    el.style.left = (e.clientX - offsetX) + 'px';
+                }
+
+                function reset() {
+                    el.removeEventListener('mousemove', mouseMoveHandler);
+                    el.removeEventListener('mouseup', reset);
+                }
+
+                el.addEventListener('mousemove', mouseMoveHandler);
+                el.addEventListener('mouseup', reset);
+            });
+        },
+        rightClickMenu: function (element, menuID) {
+            console.log("+++++++++ rightClickMenu ++++++++++");
+            var i;
+            if (element.addEventListener) {
+                element.addEventListener('contextmenu', function (e) {
+                    i = document.getElementById('fun123').style;
+                    var posX = e.clientX;
+                    var posY = e.clientY;
+                    menu(posX, posY);
+                    e.preventDefault();
+                }, false);
+                element.addEventListener('click', function (e) {
+                    i.opacity = "0";
+                    setTimeout(function () {
+                        i.visibility = "hidden";
+                    }, 501);
+                }, false);
+            } else {
+                element.attachEvent('oncontextmenu', function (e) {
+                    var posX = e.clientX;
+                    var posY = e.clientY;
+                    menu(posX, posY);
+                    e.preventDefault();
+                });
+                element.attachEvent('onclick', function (e) {
+                    i.opacity = "0";
+                    setTimeout(function () {
+                        i.visibility = "hidden";
+                    }, 501);
+                });
+            }
+            function menu(x, y) {
+                i.top = y + "px";
+                i.left = x + "px";
+                i.visibility = "visible";
+                i.opacity = "1";
+            }
+            console.log("---------- rightClickMenu -----------");
         }
     };
     return Events;

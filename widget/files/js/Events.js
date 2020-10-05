@@ -49,37 +49,49 @@ define("Events", [], function () {
                 el.addEventListener('mouseup', reset);
             });
         },
-        rightClickMenu: function (element, menuID) {
+        loadCssFile: function (fileName) {
+            var link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            var url = window.location.host + '/' + fileName;
+            link.href = url;
+            document.getElementsByTagName("head")[0].appendChild(link);
+        },
+        getImageUrl: function (fileName) {
+            var url = 'http://'+ window.location.host + '/' + fileName;
+            return url;
+        },
+        rightClickMenu: function (menuID) {
             console.log("+++++++++ rightClickMenu ++++++++++");
-            var i;
-            if (element.addEventListener) {
-                element.addEventListener('contextmenu', function (e) {
-                    i = document.getElementById('fun123').style;
+            var i = document.getElementById(menuID).style;
+            if (document.addEventListener) {
+                document.addEventListener('contextmenu', function (e) {
                     var posX = e.clientX;
                     var posY = e.clientY;
                     menu(posX, posY);
                     e.preventDefault();
                 }, false);
-                element.addEventListener('click', function (e) {
+                document.addEventListener('click', function (e) {
                     i.opacity = "0";
                     setTimeout(function () {
                         i.visibility = "hidden";
                     }, 501);
                 }, false);
             } else {
-                element.attachEvent('oncontextmenu', function (e) {
+                document.attachEvent('oncontextmenu', function (e) {
                     var posX = e.clientX;
                     var posY = e.clientY;
                     menu(posX, posY);
                     e.preventDefault();
                 });
-                element.attachEvent('onclick', function (e) {
+                document.attachEvent('onclick', function (e) {
                     i.opacity = "0";
                     setTimeout(function () {
                         i.visibility = "hidden";
                     }, 501);
                 });
             }
+
             function menu(x, y) {
                 i.top = y + "px";
                 i.left = x + "px";

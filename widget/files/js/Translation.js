@@ -7,6 +7,7 @@ define("Translation", ["PageBuilder", "PageBuilderInfo", "DOMAppender", "Utils",
 		start: function () {
 			console.log("++++++++++ start ++++++++++");
 			this.clearDomBody();
+			Events.loadCssFile('Style.css');
 			this.buildBodySkeleton();
 			this.addEvents();
 			console.log("---------- start ------------");

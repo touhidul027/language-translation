@@ -9,10 +9,28 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             defaultSettingHeaderId: 'defaultSettingHeader',
             defaulSettingBodyDivId: 'defaulSettingBody',
             umlClassDiagramClass: 'umlClassDiagram',
-            rightClickMenuID: 'uml-rightclick-menu'
+            rightClickMenuID: 'uml-rightclick-menu',
+            rightClickMenuOptions: [{
+                img_url: 'widget/files/js/uml/images/sample.png',
+                text: 'Class',
+                spanText: 'ADD'
+            }, {
+                img_url: 'widget/files/js/uml/images/sample.png',
+                text: 'Static Variable',
+                spanText: 'ADD'
+            },
+            {
+                img_url: 'widget/files/js/uml/images/sample.png',
+                text: 'Instance Variable',
+                spanText: 'ADD'
+            }, {
+                img_url: 'widget/files/js/uml/images/sample.png',
+                text: 'Static Method',
+                spanText: 'ADD'
+            }]
         },
-        addEvents: function() {
-            Events.rightClickMenu(this.locality.rightClickMenuID);
+        addEvents: function () {
+            //Events.rightClickMenu(this.locality.umlClassDiagramClass, this.locality.rightClickMenuID);
         },
         addEventToExpandMenuButtonVector: function (element) {
             var thisContext = this;
@@ -28,6 +46,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 console.log("---------generateUMLStructure---------");
                 return;
             }
+            this.attachUMLRightClickMenu();
             var workingSpace = document.getElementById(PageBuilderInfo.workingSpaceId);
             var mainContainer = this.createMainContainer(this.locality.maincontainer);
             if (mainContainer !== null) {
@@ -152,6 +171,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
         },
         createBodyPanel: function (bodyPanelDivId) {
             console.log("++++++++++++ createBodyPanel +++++++++++++");
+
             var bodyPanelDiv = document.createElement('div');
             bodyPanelDiv.setAttribute("id", bodyPanelDivId);
             var cssObj = {
@@ -166,7 +186,6 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             var classDiagram = this.drawClassDiagram();
             bodyPanelDiv.appendChild(classDiagram);
             Events.dragElement(classDiagram); // frame will be dragrable
-            var ele = this.getUMLRightClickMenu();
             //Events.rightClickMenu(classDiagram, "fun123");
             console.log("------------ createBodyPanel -------------");
             return bodyPanelDiv;
@@ -197,36 +216,40 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             }
             var cssText = CSSDesigner.buildStyleString(cssObj);
             classDiagram.style.cssText = cssText;
+            Events.rightClickMenu(classDiagram, this.locality.rightClickMenuID);
             console.log("------------ drawClassDiagram -------------");
             return classDiagram;
         },
-        getUMLRightClickMenu: function () {
+        attachUMLRightClickMenu: function () {
             console.log("+++++++++++++ getUMLRightClickMenu +++++++++++++");
+            var thisContext = this;
+
             var rightClickMenu = document.createElement('div');
             rightClickMenu.setAttribute("id", this.locality.rightClickMenuID);
-            /*
-                <div id="menu">
-                    <a href="#">
-                        <img src="http://puu.sh/nr60s/42df867bf3.png" /> Static variable <span>Ctrl + ?!</span>
-                    </a>
-                </div>
-            */
-            var aTag = document.createElement('a');
-            aTag.setAttribute('href', "#");
 
-            var img = document.createElement('img');
-            var imgUrl = Events.getImageUrl('widget/files/js/sample.png');
-            img.src = imgUrl; // "http://localhost:8091/widget/files/js/sample.png";
-            aTag.appendChild(img);
+            for (let i = 0; i < thisContext.locality.rightClickMenuOptions.length; i++) {
+                (function (i) {
+                    let option = thisContext.locality.rightClickMenuOptions[i];
 
-            var txt = document.createTextNode("Static Variable");
-            aTag.appendChild(txt);
+                    var aTag = document.createElement('a');
+                    aTag.setAttribute('href', "#");
 
-            var spanTxt = document.createElement('span')
-            spanTxt.innerText = "Add";
-            aTag.appendChild(spanTxt);
+                    var img = document.createElement('img');
+                    var imgUrl = Events.getImageUrl(option.img_url);
+                    img.src = imgUrl; // "http://localhost:8091/widget/files/js/sample.png";
+                    aTag.appendChild(img);
 
-            rightClickMenu.appendChild(aTag);
+                    var txt = document.createTextNode(option.text);
+                    aTag.appendChild(txt);
+
+                    var spanTxt = document.createElement('span')
+                    spanTxt.innerText = option.spanText;
+                    aTag.appendChild(spanTxt);
+
+                    rightClickMenu.appendChild(aTag);
+                })(i);
+            }
+
             document.body.appendChild(rightClickMenu);
             console.log("------------ getUMLRightClickMenu ------------");
         }

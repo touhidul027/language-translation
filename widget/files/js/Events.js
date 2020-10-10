@@ -61,30 +61,30 @@ define("Events", [], function () {
             var url = 'http://'+ window.location.host + '/' + fileName;
             return url;
         },
-        rightClickMenu: function (menuID) {
+        rightClickMenu: function (element, menuID) {
             console.log("+++++++++ rightClickMenu ++++++++++");
             var i = document.getElementById(menuID).style;
             if (document.addEventListener) {
-                document.addEventListener('contextmenu', function (e) {
+                element.addEventListener('contextmenu', function (e) {
                     var posX = e.clientX;
                     var posY = e.clientY;
                     menu(posX, posY);
                     e.preventDefault();
                 }, false);
-                document.addEventListener('click', function (e) {
+                element.addEventListener('click', function (e) {
                     i.opacity = "0";
                     setTimeout(function () {
                         i.visibility = "hidden";
                     }, 501);
                 }, false);
             } else {
-                document.attachEvent('oncontextmenu', function (e) {
+                element.attachEvent('oncontextmenu', function (e) {
                     var posX = e.clientX;
                     var posY = e.clientY;
                     menu(posX, posY);
                     e.preventDefault();
                 });
-                document.attachEvent('onclick', function (e) {
+                element.attachEvent('onclick', function (e) {
                     i.opacity = "0";
                     setTimeout(function () {
                         i.visibility = "hidden";

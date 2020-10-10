@@ -61,3 +61,39 @@
     border: 1px solid #EBEBEB;
     border-bottom: 0;
   }
+
+  .uml-class-section {
+    height: 45px;
+    width: auto;
+    background-color: darkgray;
+    border: 1px solid aliceblue;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+  }
+
+  .uml-instance-section {
+    height: 200px;
+    width: auto;
+    background-color: darkgray;
+    border: 1px solid aliceblue;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+  }
+
+  .uml-method-section {
+    height: 200px;
+    width: auto;
+    background-color: darkgray;
+    border: 1px solid aliceblue;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+  }

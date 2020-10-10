@@ -216,9 +216,63 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             }
             var cssText = CSSDesigner.buildStyleString(cssObj);
             classDiagram.style.cssText = cssText;
+            this.createUMLClassSection(classDiagram);
+            this.createUMLInstanceSection(classDiagram);
+            this.createUMLMethodSection(classDiagram);
             Events.rightClickMenu(classDiagram, this.locality.rightClickMenuID);
             console.log("------------ drawClassDiagram -------------");
             return classDiagram;
+        },
+        createUMLClassSection: function (parentElement) {
+            console.log("+++++++++++++ createUMLClassSection +++++++++++++++");
+            /*
+            <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
+            */
+            var classSection = document.createElement('div');
+            var id = parentElement.getAttribute("id") + "_ClassSection";
+            classSection.setAttribute("id", id);
+            classSection.classList.add("uml-class-section");
+            classSection.setAttribute("contenteditable", true);
+            classSection.innerText = "Editable";
+            classSection.ondblclick = function(e) {
+                e.target.innerText = "";
+            };
+            parentElement.appendChild(classSection);
+            console.log("------------- createUMLClassSection ---------------");
+        },
+        createUMLInstanceSection: function (parentElement) {
+            console.log("+++++++++++++ createUMLInstanceSection +++++++++++++++");
+            /*
+            <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
+            */
+            var classSection = document.createElement('div');
+            var id = parentElement.getAttribute("id") + "_createUMLInstanceSection";
+            classSection.setAttribute("id", id);
+            classSection.classList.add("uml-instance-section");
+            classSection.setAttribute("contenteditable", true);
+            classSection.innerText = "Instances";
+            classSection.ondblclick = function(e) {
+                e.target.innerText = "";
+            };
+            parentElement.appendChild(classSection);
+            console.log("------------- createUMLInstanceSection ---------------");
+        },
+        createUMLMethodSection: function (parentElement) {
+            console.log("+++++++++++++ createUMLInstanceSection +++++++++++++++");
+            /*
+            <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
+            */
+            var classSection = document.createElement('div');
+            var id = parentElement.getAttribute("id") + "_createUMLInstanceSection";
+            classSection.setAttribute("id", id);
+            classSection.classList.add("uml-instance-section");
+            classSection.setAttribute("contenteditable", true);
+            classSection.innerText = "Method";
+            classSection.ondblclick = function(e) {
+                e.target.innerText = "";
+            };
+            parentElement.appendChild(classSection);
+            console.log("------------- createUMLInstanceSection ---------------");
         },
         attachUMLRightClickMenu: function () {
             console.log("+++++++++++++ getUMLRightClickMenu +++++++++++++");

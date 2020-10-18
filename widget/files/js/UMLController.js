@@ -4,12 +4,33 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
         locality: {
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
+            sidePanel: {
+                dragableUMLClassOptionsID : "dragableUMLClassOptions",
+                dragableUMLClassOptions: [{
+                    img_url: 'widget/files/js/uml/images/sample.png',
+                    text: 'Class',
+                    spanText: 'ADD'
+                }, {
+                    img_url: 'widget/files/js/uml/images/sample.png',
+                    text: 'Static Variable',
+                    spanText: 'ADD'
+                }, {
+                    img_url: 'widget/files/js/uml/images/sample.png',
+                    text: 'Instance Variable',
+                    spanText: 'ADD'
+                }, {
+                    img_url: 'widget/files/js/uml/images/sample.png',
+                    text: 'Static Method',
+                    spanText: 'ADD'
+                }]
+            },
             bodyPanelId: 'bodyPanel',
             defaultSettingId: 'defaultSetting',
             defaultSettingHeaderId: 'defaultSettingHeader',
             defaulSettingBodyDivId: 'defaulSettingBody',
             umlClassDiagramClass: 'umlClassDiagram',
             rightClickMenuID: 'uml-rightclick-menu',
+
             rightClickMenuOptions: [{
                 img_url: 'widget/files/js/uml/images/sample.png',
                 text: 'Class',
@@ -18,8 +39,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 img_url: 'widget/files/js/uml/images/sample.png',
                 text: 'Static Variable',
                 spanText: 'ADD'
-            },
-            {
+            }, {
                 img_url: 'widget/files/js/uml/images/sample.png',
                 text: 'Instance Variable',
                 spanText: 'ADD'
@@ -78,13 +98,15 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             console.info(sidePanel);
             var css = {
                 height: '500px',
-                width: '300px',
+                'min-width': '300px',
+                'max-width': '300px',
                 'background-color': 'gray',
                 margin: '5px'
             };
             var cssText = CSSDesigner.buildStyleString(css);
             sidePanel.style.cssText = cssText;
             this.createDefaultSetting(sidePanel);
+            this.createDragableUMLClassOptions(sidePanel);
             console.log("------------ createSidePanel -------------");
             return sidePanel;
         },
@@ -165,6 +187,39 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             console.log("------------ createDefaultSettingBody -------------");
             return settingBodyDivAndPairedDiv.parentElement;
         },
+        createDragableUMLClassOptions: function(sidePanel) {
+            console.log("++++++++++++ createDragableUMLClassOptions +++++++++++++");
+            var thisContext = this;
+            var dragableUMLClassOptions = document.createElement('div');
+            var divId = this.locality.sidePanel.dragableUMLClassOptionsID;
+            dragableUMLClassOptions.setAttribute('id', divId);
+
+            for (let i = 0; i < thisContext.locality.sidePanel.dragableUMLClassOptions.length; i++) {
+                (function (i) {
+                    let option = thisContext.locality.rightClickMenuOptions[i];
+
+                    var aTag = document.createElement('a');
+                    aTag.setAttribute('href', "#");
+
+                    var img = document.createElement('img');
+                    var imgUrl = Events.getImageUrl(option.img_url);
+                    img.src = imgUrl; // "http://localhost:8091/widget/files/js/sample.png";
+                    aTag.appendChild(img);
+
+                   // var txt = document.createTextNode(option.text);
+                    //aTag.appendChild(txt);
+
+                    var spanTxt = document.createElement('span')
+                    spanTxt.innerText = option.spanText;
+                    aTag.appendChild(spanTxt);
+
+                    dragableUMLClassOptions.appendChild(aTag);
+                })(i);
+            }
+
+            sidePanel.appendChild(dragableUMLClassOptions);
+            console.log("------------ createDragableUMLClassOptions -------------");
+        },
         refreshMainPanel: function () {
             console.log("++++++++++++ refreshMainPanel +++++++++++++");
             console.log("------------ refreshMainPanel -------------");
@@ -233,7 +288,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             classSection.setAttribute("id", id);
             classSection.classList.add("uml-class-section");
             classSection.setAttribute("contenteditable", true);
-            classSection.innerText = "Editable";
+            classSection.innerText = "ClassName";
             classSection.ondblclick = function(e) {
                 e.target.innerText = "";
             };

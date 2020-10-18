@@ -97,3 +97,30 @@
     align-items: center;
     font-size: 30px;
   }
+  
+#dragableUMLClassOptions {
+	background-color: darkgrey;
+	width: auto;
+	height: 200px;
+	border: thin solid blanchedalmond;
+}
+#dragableUMLClassOptions a{
+  float: left;
+  width: 85px;
+  height: 70px;
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid black;
+  display: flex;
+}
+
+#dragableUMLClassOptions a img,
+ #dragableUMLClassOptions a i.fa {
+    height: 25px;
+    font-size: 17px;
+    width: 25px;
+  }
+
+#dragableUMLClassOptions a span {
+    padding-left: 10px;
+  }

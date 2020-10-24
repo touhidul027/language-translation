@@ -7,21 +7,33 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             sidePanel: {
                 dragableUMLClassOptionsID : "dragableUMLClassOptions",
                 dragableUMLClassOptions: [{
+                    id: 'uml-class',
+                    division: 'class',
                     img_url: 'widget/files/js/uml/images/sample.png',
                     text: 'Class',
-                    spanText: 'ADD'
+                    spanText: 'ADD',
+                    dataTransfer: 'umlClassName'
                 }, {
+                    id: 'uml-static-variable',
+                    division: 'variable',
                     img_url: 'widget/files/js/uml/images/sample.png',
                     text: 'Static Variable',
-                    spanText: 'ADD'
+                    spanText: 'ADD',
+                    dataTransfer: 'umlStaticVariable'
                 }, {
+                    id: 'uml-instance-variable',
+                    division: 'variable',
                     img_url: 'widget/files/js/uml/images/sample.png',
                     text: 'Instance Variable',
-                    spanText: 'ADD'
+                    spanText: 'ADD',
+                    dataTransfer: 'umlInstanceVariable'
                 }, {
+                    id: 'uml-static-method',
+                    division: 'method',
                     img_url: 'widget/files/js/uml/images/sample.png',
                     text: 'Static Method',
-                    spanText: 'ADD'
+                    spanText: 'ADD',
+                    dataTransfer: 'umlStaticMethod'
                 }]
             },
             bodyPanelId: 'bodyPanel',
@@ -196,23 +208,34 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
 
             for (let i = 0; i < thisContext.locality.sidePanel.dragableUMLClassOptions.length; i++) {
                 (function (i) {
-                    let option = thisContext.locality.rightClickMenuOptions[i];
+                    let option = thisContext.locality.sidePanel.dragableUMLClassOptions[i];
 
                     var aTag = document.createElement('a');
                     aTag.setAttribute('href', "#");
-
+                    console.info(option.id);
+                    aTag.setAttribute('id', option.id);
                     var img = document.createElement('img');
                     var imgUrl = Events.getImageUrl(option.img_url);
                     img.src = imgUrl; // "http://localhost:8091/widget/files/js/sample.png";
                     aTag.appendChild(img);
 
-                   // var txt = document.createTextNode(option.text);
+                    //var txt = document.createTextNode(option.text);
                     //aTag.appendChild(txt);
 
                     var spanTxt = document.createElement('span')
-                    spanTxt.innerText = option.spanText;
+                    spanTxt.innerText = option.text;
                     aTag.appendChild(spanTxt);
 
+                    var dataTransfer = {
+                        "division" : option.division,
+                        "dataTransfer" : option.dataTransfer
+                    };
+                    aTag.draggable = true;
+                    aTag.ondragstart = function(event) {
+                        console.info("firing");
+                        console.info(event.target.id);
+                        event.dataTransfer.setData("text", JSON.stringify(dataTransfer));
+                    };
                     dragableUMLClassOptions.appendChild(aTag);
                 })(i);
             }
@@ -292,6 +315,14 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             classSection.ondblclick = function(e) {
                 e.target.innerText = "";
             };
+            classSection.ondrop = function (ev) {
+                ev.preventDefault();
+                var data = JSON.parse(ev.dataTransfer.getData("text"));
+                if (data.division.toLowerCase().includes("class")) {
+                   
+                }
+                stop();
+            }
             parentElement.appendChild(classSection);
             console.log("------------- createUMLClassSection ---------------");
         },
@@ -303,12 +334,20 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             var classSection = document.createElement('div');
             var id = parentElement.getAttribute("id") + "_createUMLInstanceSection";
             classSection.setAttribute("id", id);
-            classSection.classList.add("uml-instance-section");
+            classSection.classList.add("uml-variable-section");
             classSection.setAttribute("contenteditable", true);
             classSection.innerText = "Instances";
             classSection.ondblclick = function(e) {
                 e.target.innerText = "";
             };
+            classSection.ondrop = function (ev) {
+                ev.preventDefault();
+                var data = JSON.parse(ev.dataTransfer.getData("text"));
+                if (data.division.toLowerCase().includes("variable")) {
+                   
+                }
+                stop();
+            }
             parentElement.appendChild(classSection);
             console.log("------------- createUMLInstanceSection ---------------");
         },
@@ -317,16 +356,24 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             /*
             <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
             */
-            var classSection = document.createElement('div');
-            var id = parentElement.getAttribute("id") + "_createUMLInstanceSection";
-            classSection.setAttribute("id", id);
-            classSection.classList.add("uml-instance-section");
-            classSection.setAttribute("contenteditable", true);
-            classSection.innerText = "Method";
-            classSection.ondblclick = function(e) {
+            var methodSection = document.createElement('div');
+            var id = parentElement.getAttribute("id") + "_createUMLMethodSection";
+            methodSection.setAttribute("id", id);
+            methodSection.classList.add("uml-method-section");
+            methodSection.setAttribute("contenteditable", true);
+            methodSection.innerText = "Method";
+            methodSection.ondblclick = function(e) {
                 e.target.innerText = "";
             };
-            parentElement.appendChild(classSection);
+            methodSection.ondrop = function (ev) {
+                ev.preventDefault();
+                var data = JSON.parse(ev.dataTransfer.getData("text"));
+                if (data.division.toLowerCase().includes("method")) {
+                   
+                }
+                stop();
+            }
+            parentElement.appendChild(methodSection);
             console.log("------------- createUMLInstanceSection ---------------");
         },
         attachUMLRightClickMenu: function () {

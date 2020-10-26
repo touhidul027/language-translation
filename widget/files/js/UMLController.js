@@ -306,20 +306,24 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             /*
             <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
             */
+            var thisContext = this;
             var classSection = document.createElement('div');
             var id = parentElement.getAttribute("id") + "_ClassSection";
             classSection.setAttribute("id", id);
             classSection.classList.add("uml-class-section");
-            classSection.setAttribute("contenteditable", true);
+            //classSection.setAttribute("contenteditable", true);
             classSection.innerText = "ClassName";
             classSection.ondblclick = function(e) {
                 e.target.innerText = "";
+            };
+            classSection.ondragover = function (e) {
+                e.preventDefault()
             };
             classSection.ondrop = function (ev) {
                 ev.preventDefault();
                 var data = JSON.parse(ev.dataTransfer.getData("text"));
                 if (data.division.toLowerCase().includes("class")) {
-                   
+                    thisContext.umlInputFieldutils.generateInputForClassSection(classSection);
                 }
                 stop();
             }
@@ -408,7 +412,23 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
 
             document.body.appendChild(rightClickMenu);
             console.log("------------ getUMLRightClickMenu ------------");
+        },
+        umlInputFieldutils: {
+            generateInputForClassSection: function(element) {
+                console.info("++++++++++++ generateInputForClassSection +++++++++++++++");
+                console.info(element);
+                if (element.children.length === 0 ) {
+                    element.innerText = "";
+                    var inputElement = document.createElement("INPUT");
+                    inputElement.setAttribute("type", "text");
+                    element.appendChild(inputElement);
+                } else {
+                    alert("Already has an element. Please modify that.");
+                }
+                console.info("----------- generateInputForClassSection -----------");
+            }
         }
+
     };
     return UMLController;
 });

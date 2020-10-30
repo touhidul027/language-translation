@@ -5,7 +5,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
             sidePanel: {
-                dragableUMLClassOptionsID : "dragableUMLClassOptions",
+                dragableUMLClassOptionsID: "dragableUMLClassOptions",
                 dragableUMLClassOptions: [{
                     id: 'uml-class',
                     division: 'class',
@@ -34,6 +34,14 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                     text: 'Static Method',
                     spanText: 'ADD',
                     dataTransfer: 'umlStaticMethod'
+                },
+                {
+                    id: 'uml-instance-method',
+                    division: 'method',
+                    img_url: 'widget/files/js/uml/images/sample.png',
+                    text: 'Instance Method',
+                    spanText: 'ADD',
+                    dataTransfer: 'umlInstanceMethod'
                 }]
             },
             bodyPanelId: 'bodyPanel',
@@ -199,7 +207,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             console.log("------------ createDefaultSettingBody -------------");
             return settingBodyDivAndPairedDiv.parentElement;
         },
-        createDragableUMLClassOptions: function(sidePanel) {
+        createDragableUMLClassOptions: function (sidePanel) {
             console.log("++++++++++++ createDragableUMLClassOptions +++++++++++++");
             var thisContext = this;
             var dragableUMLClassOptions = document.createElement('div');
@@ -227,11 +235,11 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                     aTag.appendChild(spanTxt);
 
                     var dataTransfer = {
-                        "division" : option.division,
-                        "dataTransfer" : option.dataTransfer
+                        "division": option.division,
+                        "dataTransfer": option.dataTransfer
                     };
                     aTag.draggable = true;
-                    aTag.ondragstart = function(event) {
+                    aTag.ondragstart = function (event) {
                         console.info("firing");
                         console.info(event.target.id);
                         event.dataTransfer.setData("text", JSON.stringify(dataTransfer));
@@ -313,8 +321,9 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             classSection.classList.add("uml-class-section");
             //classSection.setAttribute("contenteditable", true);
             classSection.innerText = "ClassName";
-            classSection.ondblclick = function(e) {
-                e.target.innerText = "";
+            classSection.ondblclick = function (e) {
+                //e.target.innerText = "";
+                alert("converting");
             };
             classSection.ondragover = function (e) {
                 e.preventDefault()
@@ -335,20 +344,24 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             /*
             <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
             */
+            var thisContext = this;
             var classSection = document.createElement('div');
             var id = parentElement.getAttribute("id") + "_createUMLInstanceSection";
             classSection.setAttribute("id", id);
             classSection.classList.add("uml-variable-section");
-            classSection.setAttribute("contenteditable", true);
+            //classSection.setAttribute("contenteditable", true);
             classSection.innerText = "Instances";
-            classSection.ondblclick = function(e) {
-                e.target.innerText = "";
+            classSection.ondblclick = function (e) {
+                //e.target.innerText = "";
+            };
+            classSection.ondragover = function (e) {
+                e.preventDefault()
             };
             classSection.ondrop = function (ev) {
                 ev.preventDefault();
                 var data = JSON.parse(ev.dataTransfer.getData("text"));
                 if (data.division.toLowerCase().includes("variable")) {
-                   
+                    thisContext.umlInputFieldutils.generateInputForVariableSection(classSection);
                 }
                 stop();
             }
@@ -360,20 +373,24 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             /*
             <div style="height: 45px;width: auto;background-color: darkgray;border: 1px solid aliceblue;" contenteditable="true">hjykbjbjb</div>
             */
+            var thisContext = this;
             var methodSection = document.createElement('div');
             var id = parentElement.getAttribute("id") + "_createUMLMethodSection";
             methodSection.setAttribute("id", id);
             methodSection.classList.add("uml-method-section");
-            methodSection.setAttribute("contenteditable", true);
+            //methodSection.setAttribute("contenteditable", true);
             methodSection.innerText = "Method";
-            methodSection.ondblclick = function(e) {
-                e.target.innerText = "";
+            methodSection.ondblclick = function (e) {
+                //e.target.innerText = "";
+            };
+            methodSection.ondragover = function (e) {
+                e.preventDefault()
             };
             methodSection.ondrop = function (ev) {
                 ev.preventDefault();
                 var data = JSON.parse(ev.dataTransfer.getData("text"));
                 if (data.division.toLowerCase().includes("method")) {
-                   
+                    thisContext.umlInputFieldutils.generateInputForMethodSection(methodSection, data);
                 }
                 stop();
             }
@@ -414,10 +431,10 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             console.log("------------ getUMLRightClickMenu ------------");
         },
         umlInputFieldutils: {
-            generateInputForClassSection: function(element) {
+            generateInputForClassSection: function (element) {
                 console.info("++++++++++++ generateInputForClassSection +++++++++++++++");
                 console.info(element);
-                if (element.children.length === 0 ) {
+                if (element.children.length === 0) {
                     element.innerText = "";
                     var inputElement = document.createElement("INPUT");
                     inputElement.setAttribute("type", "text");
@@ -426,6 +443,31 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                     alert("Already has an element. Please modify that.");
                 }
                 console.info("----------- generateInputForClassSection -----------");
+            },
+            generateInputForVariableSection: function (element) {
+                console.info("++++++++++++ generateInputForVariableSection +++++++++++++++");
+                console.info(element);
+                if (element.children.length === 0) {
+                    element.innerText = "";
+                }
+                var inputElement = document.createElement("INPUT");
+                inputElement.setAttribute("type", "text");
+                element.appendChild(inputElement);
+                //alert("You created variable section.");
+                console.info("----------- generateInputForVariableSection -----------");
+            },
+            generateInputForMethodSection: function (element, data) {
+                console.info("++++++++++++ generateInputForMethodSection +++++++++++++++");
+                console.info(element);
+                console.info(data);
+                if (element.children.length === 0) {
+                    element.innerText = "";
+                }
+                var inputElement = document.createElement("INPUT");
+                inputElement.setAttribute("type", "text");
+                element.appendChild(inputElement);
+                //alert("You created variable section.");
+                console.info("----------- generateInputForMethodSection -----------");
             }
         }
 

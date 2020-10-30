@@ -80,10 +80,11 @@
     background-color: darkgray;
     border: 1px solid aliceblue;
     margin: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 30px;
+  }
+  .uml-variable-section input{
+    display: block;
+    margin: 10px auto;
   }
 
   .uml-method-section {
@@ -92,16 +93,17 @@
     background-color: darkgray;
     border: 1px solid aliceblue;
     margin: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 30px;
   }
-  
+  .uml-method-section input{
+    display: block;
+    margin: 10px auto;
+  }
+
 #dragableUMLClassOptions {
 	background-color: darkgrey;
 	width: auto;
-	height: 200px;
+	height: 350px;
 	border: thin solid blanchedalmond;
 }
 #dragableUMLClassOptions a{

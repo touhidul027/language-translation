@@ -76,6 +76,12 @@ define("PageBuilder", ["CSSDesigner", "Events"], function (CSSDesigner, Events) 
 				"parentElement": parentElement,
 				"childPairedDiv": div
 			}
+		},
+		createLanguageCard: function (umlDivId, cardId, menus) {
+			console.log("+++++++++++ createLanguageCard ++++++++++");
+			var cardDiv = document.createElement('div');
+			cardDiv.setAttribute('id', cardId);
+			console.log("----------- createLanguageCard ----------");
 		}
 	};
 	return pageBuilder;

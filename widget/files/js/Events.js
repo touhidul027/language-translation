@@ -61,6 +61,26 @@ define("Events", [], function () {
             var url = 'http://'+ window.location.host + '/' + fileName;
             return url;
         },
+        loadJSONFile: function (fileName) {
+            var url = 'http://' + window.location.host + '/' + fileName;
+            return new Promise(function (resolve, reject) {
+                var httpReq = new XMLHttpRequest();
+                httpReq.overrideMimeType("application/json");
+                httpReq.onreadystatechange = function () {
+                    var data;
+                    if (httpReq.readyState == 4) {
+                        if (httpReq.status == 200) {
+                            data = JSON.parse(httpReq.responseText);
+                            resolve(data);
+                        } else {
+                            reject(new Error(httpReq.statusText));
+                        }
+                    }
+                };
+                httpReq.open("GET", url, true);
+                httpReq.send();
+            });
+        },
         rightClickMenu: function (element, menuID) {
             console.log("+++++++++ rightClickMenu ++++++++++");
             var i = document.getElementById(menuID).style;

@@ -316,13 +316,16 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             */
             var thisContext = this;
             var classSection = document.createElement('div');
-            var id = parentElement.getAttribute("id") + "_ClassSection";
+            var singleUMLDivId = parentElement.getAttribute("id");
+            var id = singleUMLDivId + "_ClassSection";
             classSection.setAttribute("id", id);
             classSection.classList.add("uml-class-section");
             //classSection.setAttribute("contenteditable", true);
             classSection.innerText = "ClassName";
             classSection.ondblclick = function (e) {
                 //e.target.innerText = "";
+                console.log("converting UML to code");
+                thisContext.displayUMLToLanguageChoice(singleUMLDivId);
                 alert("converting");
             };
             classSection.ondragover = function (e) {
@@ -361,7 +364,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 ev.preventDefault();
                 var data = JSON.parse(ev.dataTransfer.getData("text"));
                 if (data.division.toLowerCase().includes("variable")) {
-                    thisContext.umlInputFieldutils.generateInputForVariableSection(classSection);
+                    thisContext.umlInputFieldutils.generateInputForVariableSection(classSection,data);
                 }
                 stop();
             }
@@ -444,14 +447,22 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 }
                 console.info("----------- generateInputForClassSection -----------");
             },
-            generateInputForVariableSection: function (element) {
+            generateInputForVariableSection: function (element, data) {
                 console.info("++++++++++++ generateInputForVariableSection +++++++++++++++");
                 console.info(element);
+                console.info(data);
+                /*
+                data = {
+                    "division": "variable",
+                    "dataTransfer": "umlInstanceVariable"
+                }
+                */
                 if (element.children.length === 0) {
                     element.innerText = "";
                 }
                 var inputElement = document.createElement("INPUT");
                 inputElement.setAttribute("type", "text");
+                inputElement.setAttribute("variable-type",data.dataTransfer);
                 element.appendChild(inputElement);
                 //alert("You created variable section.");
                 console.info("----------- generateInputForVariableSection -----------");
@@ -469,8 +480,22 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 //alert("You created variable section.");
                 console.info("----------- generateInputForMethodSection -----------");
             }
+        },
+        displayUMLToLanguageChoice: function(umlDivId) {
+            console.log("++++++++++ displayUMLToLanguageChoice +++++++++++");
+            var fileName = 'widget/files/js/LanguageConfigurations.json';
+            Events.loadJSONFile(fileName).then(function(jsonData) {
+                var languageChoices = jsonData.languages;
+                var languageArray = [];
+                for (const [key, value] of Object.entries(languageChoices)) {
+                    languageArray.push(value.name);
+                }
+                console.log("-------> " + umlDivId)
+                var cardDivId = umlDivId + "_languageTranslationCard";
+                PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray);
+            });
+            console.log("---------- displayUMLToLanguageChoice -----------");
         }
-
     };
     return UMLController;
 });

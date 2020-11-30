@@ -126,3 +126,7 @@
 #dragableUMLClassOptions a span {
     padding-left: 10px;
   }
+
+.translation-card-menu {
+    padding: 5px;
+}

@@ -1,6 +1,7 @@
 
 define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events", "DOMAppender"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events, DOMAppender) {
     var UMLController = {
+        languageChoices : '',
         locality: {
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
@@ -326,7 +327,6 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 //e.target.innerText = "";
                 console.log("converting UML to code");
                 thisContext.displayUMLToLanguageChoice(singleUMLDivId);
-                alert("converting");
             };
             classSection.ondragover = function (e) {
                 e.preventDefault()
@@ -481,18 +481,23 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 console.info("----------- generateInputForMethodSection -----------");
             }
         },
-        displayUMLToLanguageChoice: function(umlDivId) {
+        displayUMLToLanguageChoice: function (umlDivId) {
             console.log("++++++++++ displayUMLToLanguageChoice +++++++++++");
             var fileName = 'widget/files/js/LanguageConfigurations.json';
-            Events.loadJSONFile(fileName).then(function(jsonData) {
-                var languageChoices = jsonData.languages;
+            var cardDivId = umlDivId + "_languageTranslationCard";
+            var cssObj = Events.getPosition(umlDivId) ;
+            Events.loadJSONFile(fileName).then(function (jsonData) {
+                languageChoices = jsonData.languages;
                 var languageArray = [];
                 for (const [key, value] of Object.entries(languageChoices)) {
                     languageArray.push(value.name);
                 }
-                console.log("-------> " + umlDivId)
-                var cardDivId = umlDivId + "_languageTranslationCard";
-                PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray);
+                var LanguageCard = document.getElementById(cardDivId);
+                console.log(LanguageCard)
+                if (LanguageCard === null) {
+                    PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray, cssObj);
+                }
+                
             });
             console.log("---------- displayUMLToLanguageChoice -----------");
         }

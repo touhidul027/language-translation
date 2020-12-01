@@ -119,6 +119,16 @@ define("Events", [], function () {
                 i.opacity = "1";
             }
             console.log("---------- rightClickMenu -----------");
+        },
+        getPosition: function(id) {
+            var element = document.getElementById(id);
+            var DOMRect = element.getBoundingClientRect()
+            return {
+                top: DOMRect.top,
+                left: DOMRect.left,
+                width: DOMRect.width,
+                height: DOMRect.height
+            }
         }
     };
     return Events;

@@ -57,6 +57,9 @@ define("DOMAppender", ["CSSDesigner", "Events", "Utils"], function (CSSDesigner,
             btn.setAttribute('id', obj.id);
             temp.appendChild(btn);
             parentElement.appendChild(temp);
+        },
+        appendElementToBody: function(element){
+            document.body.appendChild(element);
         }
     };
     return DOMAppender;

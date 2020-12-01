@@ -127,6 +127,13 @@
     padding-left: 10px;
   }
 
+.language-translation-card {
+  width: 600px;
+  height: 700px;
+  background-color: lightslategray;
+  border: 1px solid white;
+}
+
 .translation-card-menu {
     padding: 5px;
 }

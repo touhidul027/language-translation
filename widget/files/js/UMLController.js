@@ -1,7 +1,7 @@
 
 define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events", "DOMAppender"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events, DOMAppender) {
     var UMLController = {
-        languageChoices : '',
+        languageChoices: '',
         locality: {
             maincontainer: 'newUmlContainer',
             sidePanelId: 'sidePanel',
@@ -364,7 +364,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 ev.preventDefault();
                 var data = JSON.parse(ev.dataTransfer.getData("text"));
                 if (data.division.toLowerCase().includes("variable")) {
-                    thisContext.umlInputFieldutils.generateInputForVariableSection(classSection,data);
+                    thisContext.umlInputFieldutils.generateInputForVariableSection(classSection, data);
                 }
                 stop();
             }
@@ -462,7 +462,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 }
                 var inputElement = document.createElement("INPUT");
                 inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("variable-type",data.dataTransfer);
+                inputElement.setAttribute("variable-type", data.dataTransfer);
                 element.appendChild(inputElement);
                 //alert("You created variable section.");
                 console.info("----------- generateInputForVariableSection -----------");
@@ -485,20 +485,26 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
             console.log("++++++++++ displayUMLToLanguageChoice +++++++++++");
             var fileName = 'widget/files/js/LanguageConfigurations.json';
             var cardDivId = umlDivId + "_languageTranslationCard";
-            var cssObj = Events.getPosition(umlDivId) ;
+            var LanguageCard = document.getElementById(cardDivId);
+            if (LanguageCard != null) {
+                var isDisplayed = CSSDesigner.isDisplayed(LanguageCard);
+                if (isDisplayed) {
+                    CSSDesigner.setDisplay(LanguageCard, "none");
+                } else {
+                    CSSDesigner.setDisplay(LanguageCard, "block");
+                }
+            }
             Events.loadJSONFile(fileName).then(function (jsonData) {
                 languageChoices = jsonData.languages;
                 var languageArray = [];
                 for (const [key, value] of Object.entries(languageChoices)) {
                     languageArray.push(value.name);
                 }
-                var LanguageCard = document.getElementById(cardDivId);
-                console.log(LanguageCard)
-                if (LanguageCard === null) {
-                    PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray, cssObj);
-                }
-                
+                LanguageCard = PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray);
+                CSSDesigner.viewAsSibling(umlDivId, LanguageCard, "right");
             });
+
+            var umlDivElement = document.getElementById(umlDivId);
             console.log("---------- displayUMLToLanguageChoice -----------");
         }
     };

@@ -1,4 +1,4 @@
-define("Events", [], function () {
+define("Events", ["Utils"], function (Utils) {
     var Events = {
         addHover: function (e) {
             console.log("++++++++++addHover+++++++++");
@@ -120,8 +120,8 @@ define("Events", [], function () {
             }
             console.log("---------- rightClickMenu -----------");
         },
-        getPosition: function(id) {
-            var element = document.getElementById(id);
+        getPosition: function(e) {
+            var element = Utils.getElement(e);
             var DOMRect = element.getBoundingClientRect()
             return {
                 top: DOMRect.top,

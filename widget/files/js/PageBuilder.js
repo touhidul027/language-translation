@@ -77,21 +77,25 @@ define("PageBuilder", ["CSSDesigner", "Events", "DOMAppender"], function (CSSDes
 				"childPairedDiv": div
 			}
 		},
-		createLanguageCard: function (umlDivId, cardId, menus, cssObj) {
+		createLanguageCard: function (umlDivId, cardId, menus) {
 			console.log("+++++++++++ createLanguageCard ++++++++++");
-			var cardDiv = document.createElement('div');
-			cardDiv.setAttribute('id', cardId);
-			//var cssText = CSSDesigner.buildStyleString(cssObj);
-			//console.log(cssText);
-			//cardDiv.style.cssText = cssText;
+			var cardDiv  = document.getElementById(cardId);
+			if (cardDiv == null) {
+				cardDiv = document.createElement('div');
+				cardDiv.setAttribute('id', cardId);
+				cardDiv.classList.add("language-translation-card");
+			    Events.dragElement(cardDiv);
+			    DOMAppender.appendElementToBody(cardDiv);
+			}
+            /*
 			cardDiv.style.position = "fixed";
 			cardDiv.style.display = "bloack";
 			cardDiv.style.top = cssObj.top + "px";
 			cardDiv.style.left = cssObj.left + cssObj.width + "px";
-			cardDiv.classList.add("language-translation-card");
-			Events.dragElement(cardDiv);
-			DOMAppender.appendElementToBody(cardDiv);
+			*/
+			
 			console.log("----------- createLanguageCard ----------");
+			return cardDiv;
 		}
 	};
 	return pageBuilder;

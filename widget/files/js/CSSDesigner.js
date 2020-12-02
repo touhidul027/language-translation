@@ -1,4 +1,4 @@
-define("CSSDesigner", [], function () {
+define("CSSDesigner", ["Events","Utils"], function (Events, Utils) {
     var pageBuilder = {
         designMenu: function (menu) {
             console.log('++++++++ designMenu +++++++');
@@ -31,11 +31,43 @@ define("CSSDesigner", [], function () {
             var cssStyle = this.buildStyleString(cssObj);
             return cssStyle;
         },
+        isDisplayed: function (e) {
+            var element = Utils.getElement(e);
+            var isDisplayed = true;
+            if (element.style.display === 'none' || element.style.display === 'hiden') {
+                isDisplayed = false;
+            }
+            return isDisplayed;
+        },
+        setDisplay: function(e, cmd) {
+            var element = Utils.getElement(e);
+            function _setDisplayNone(ele) {
+                ele.style.display = 'none';
+            }
+            function _setDisplayBlock(ele) {
+                ele.style.display = 'block';
+            }
+            if (cmd.toLowerCase() === "none") {
+                _setDisplayNone(element);
+            } else if (cmd.toLowerCase() === "block") {
+                _setDisplayBlock(element);
+            }
+        },
         switchDisplay: function(element) {
             if (element.style.display === 'none') {
                 element.style.display = 'block';
             } else {
                 element.style.display = 'none';
+            }
+        },
+        viewAsSibling: function(srcEle, temp, direction) {
+            var cssObj = Events.getPosition(srcEle);
+            var tempDiv = Utils.getElement(temp);
+            tempDiv.style.position = "fixed";
+            tempDiv.style.display = "bloack";
+            if (direction === "right") {
+                tempDiv.style.top = cssObj.top + "px";
+                tempDiv.style.left = cssObj.left + cssObj.width + "px";
             }
         },
         appendInnerHtml: function(elementId, innerHTML) {

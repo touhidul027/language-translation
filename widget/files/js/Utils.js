@@ -36,6 +36,15 @@ define("Utils", [], function () {
                 }
             }
             return func;
+        },
+        getElement(e) {
+            var element = null;
+            if (typeof e === 'string') {
+                element = document.getElementById(e);
+            } else {
+                element = e;
+            }
+            return element;
         }
     };
     return Utils;

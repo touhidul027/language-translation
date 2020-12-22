@@ -37,7 +37,13 @@ define("Utils", [], function () {
             }
             return func;
         },
-        getElement(e) {
+        getElementId: function(element) {
+            if (element == null) {
+                return null;
+            }
+            return element.getAttribute("id");
+        },
+        getElement: function(e) {
             var element = null;
             if (typeof e === 'string') {
                 element = document.getElementById(e);

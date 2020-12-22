@@ -1,5 +1,5 @@
 
-define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events", "DOMAppender"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events, DOMAppender) {
+define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Events", "DOMAppender", "LanguageCardManager"], function (PageBuilderInfo, PageBuilder, CSSDesigner, Events, DOMAppender, LanguageCardManager) {
     var UMLController = {
         languageChoices: '',
         locality: {
@@ -502,6 +502,7 @@ define("UMLController", ["PageBuilderInfo", "PageBuilder", "CSSDesigner", "Event
                 }
                 LanguageCard = PageBuilder.createLanguageCard(umlDivId, cardDivId, languageArray);
                 CSSDesigner.viewAsSibling(umlDivId, LanguageCard, "right");
+                LanguageCardManager.process(LanguageCard, languageArray);
             });
 
             var umlDivElement = document.getElementById(umlDivId);

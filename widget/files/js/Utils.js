@@ -51,6 +51,51 @@ define("Utils", [], function () {
                 element = e;
             }
             return element;
+        },
+        addClassToElement: function(e, className) {
+            e = this.getElement(e);
+            e.classList.add(className);
+            return e;
+        },
+        getFirstLevelChild: function(element) {
+            console.log("++++++ getFirstLevelChild +++++");
+            function getChildNodes(node) {
+                var children = new Array();
+                for(var child in node.childNodes) {
+                    if(node.childNodes[child].nodeType == 1) {
+                        children.push(child);
+                    }
+                }
+                return children;
+            }
+            console.log("------ getFirstLevelChild -----");
+        },
+        isEmpty: function(x) {
+            if(typeof(x) === 'object'){
+                if(JSON.stringify(x) === '{}' || JSON.stringify(x) === '[]'){
+                    return true;
+                }else if(!x){
+                    return true;
+                }
+                return false;
+            }
+            return (
+                (typeof x == 'undefined')
+                            ||
+                (x == null)
+                            ||
+                (x == false)  //same as: !x
+                            ||
+                (x.length == 0)
+                            ||
+                (x == "")
+                            ||
+                (x.replace(/\s/g,"") == "")
+                            ||
+                (!/[^\s]/.test(x))
+                            ||
+                (/^\s*$/.test(x))
+            );
         }
     };
     return Utils;

@@ -5,6 +5,11 @@ define("DOMAppender", ["CSSDesigner", "Events", "Utils"], function (CSSDesigner,
             document.getElementById(elementId).innerHTML = htmlStr;
             console.info('-------append--------');
         },
+        appendLast: function(parentElem, element) {
+            console.info('+++++++ appendLast ++++++++');
+            parentElem.appendChild(element);
+            console.info('------- appendLast --------');
+        },
         _appendTextToElement: function (Element, text) {
             // check if it is elementId, or Element, or nodeList
             if (Element.type = "input") {

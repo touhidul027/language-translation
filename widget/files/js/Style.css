@@ -137,3 +137,15 @@
 .translation-card-menu {
     padding: 5px;
 }
+
+.language-card-header-menus,
+.language-card-header-body{
+	border: 1px solid blanchedalmond;
+	margin: 5px;
+}
+
+.language-card-header-body{
+  width: 300px;
+  height: 300px;
+  background-color: red;
+}
